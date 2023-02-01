@@ -5,7 +5,12 @@ const express = require('express');
 const app = express();
 app.use(express.json());
 app.get('/', (req, res) => {
-    res.send('419456910').status(200)
+    const challenge = req.query['hub.challenge'];
+    if (challenge) {
+        res.send(challenge);
+    } else {
+        res.sendStatus(400);
+    }
 })
 app.post('/webhook', (req, res) => {
     const message = req.body.entry[0].messaging[0].message.text;
